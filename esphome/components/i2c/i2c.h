@@ -3,6 +3,11 @@
 #include <Wire.h>
 #include "esphome/core/component.h"
 #include "esphome/core/helpers.h"
+#include "esphome/core/defines.h"
+
+#ifdef USE_POWER_SUPPLY
+#include "esphome/components/power_supply/power_supply.h"
+#endif
 
 namespace esphome {
 namespace i2c {
@@ -122,12 +127,25 @@ class I2CComponent : public Component {
   /// Set a very high setup priority to make sure it's loaded before all other hardware.
   float get_setup_priority() const override;
 
+#ifdef USE_POWER_SUPPLY
+  /** Use this to connect up a power supply to this bus.
+   *
+   * Whenever the bus is used, the power supply will automatically be turned on.
+   *
+   * @param power_supply The PowerSupplyComponent, set this to nullptr to disable the power supply.
+   */
+  void set_power_supply(power_supply::PowerSupply *power_supply) { this->power_.set_parent(power_supply); }
+#endif
+
  protected:
   TwoWire *wire_;
   uint8_t sda_pin_;
   uint8_t scl_pin_;
   uint32_t frequency_;
   bool scan_;
+#ifdef USE_POWER_SUPPLY
+  power_supply::PowerSupplyRequester power_{};
+#endif
 };
 
 #ifdef ARDUINO_ARCH_ESP32

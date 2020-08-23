@@ -1,8 +1,9 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome import pins
+from esphome.components import power_supply
 from esphome.const import CONF_FREQUENCY, CONF_ID, CONF_SCAN, CONF_SCL, CONF_SDA, CONF_ADDRESS, \
-    CONF_I2C_ID
+    CONF_I2C_ID, CONF_POWER_SUPPLY
 from esphome.core import coroutine, coroutine_with_priority
 
 CODEOWNERS = ['@esphome/core']
@@ -18,9 +19,11 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Optional(CONF_FREQUENCY, default='50kHz'):
         cv.All(cv.frequency, cv.Range(min=0, min_included=False)),
     cv.Optional(CONF_SCAN, default=True): cv.boolean,
+    cv.Optional(CONF_POWER_SUPPLY): cv.use_id(power_supply.PowerSupply),
 }).extend(cv.COMPONENT_SCHEMA)
 
 
+    
 @coroutine_with_priority(1.0)
 def to_code(config):
     cg.add_global(i2c_ns.using)
@@ -32,6 +35,9 @@ def to_code(config):
     cg.add(var.set_frequency(int(config[CONF_FREQUENCY])))
     cg.add(var.set_scan(config[CONF_SCAN]))
     cg.add_library('Wire', None)
+    if CONF_POWER_SUPPLY in config:
+        var_ = yield cg.get_variable(config[CONF_POWER_SUPPLY])
+        cg.add(var.set_power_supply(var_))
 
 
 def i2c_device_schema(default_address):
