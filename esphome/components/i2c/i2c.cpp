@@ -21,9 +21,13 @@ I2CComponent::I2CComponent() {
 }
 
 void I2CComponent::setup() {
+#ifdef USE_POWER_SUPPLY
+  this->power_.request();
+#endif
   this->wire_->begin(this->sda_pin_, this->scl_pin_);
   this->wire_->setClock(this->frequency_);
 }
+
 void I2CComponent::dump_config() {
   ESP_LOGCONFIG(TAG, "I2C Bus:");
   ESP_LOGCONFIG(TAG, "  SDA Pin: GPIO%u", this->sda_pin_);
