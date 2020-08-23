@@ -14,6 +14,8 @@ namespace esphome {
  */
 namespace setup_priority {
 
+/// For Power Supplies
+extern const float PSU;
 /// For communication buses like i2c/spi
 extern const float BUS;
 /// For components that represent GPIO pins like PCF8573

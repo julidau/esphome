@@ -10,6 +10,7 @@ static const char *TAG = "component";
 
 namespace setup_priority {
 
+const float PSU = 1100.0f;
 const float BUS = 1000.0f;
 const float IO = 900.0f;
 const float HARDWARE = 800.0f;

@@ -20,7 +20,7 @@ void PowerSupply::dump_config() {
   ESP_LOGCONFIG(TAG, "  Keep on time: %.1f s", this->keep_on_time_ / 1000.0f);
 }
 
-float PowerSupply::get_setup_priority() const { return setup_priority::IO; }
+float PowerSupply::get_setup_priority() const { return setup_priority::PSU; }
 
 bool PowerSupply::is_enabled() const { return this->enabled_; }
 
