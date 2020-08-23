@@ -3,6 +3,7 @@
 #include <Wire.h>
 #include "esphome/core/component.h"
 #include "esphome/core/helpers.h"
+#include "esphome/core/defines.h"
 
 #ifdef USE_POWER_SUPPLY
 #include "esphome/components/power_supply/power_supply.h"
